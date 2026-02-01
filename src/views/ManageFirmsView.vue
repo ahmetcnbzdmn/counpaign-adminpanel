@@ -30,7 +30,7 @@ const deleting = ref(false);
 const fetchFirms = async () => {
     loading.value = true;
     try {
-        const response = await fetch('http://localhost:5001/api/firms');
+        const response = await fetch('https://counpaign.com/api/firms');
         if (!response.ok) throw new Error('Failed to fetch firms');
         firms.value = await response.json();
     } catch (error) {
@@ -51,7 +51,7 @@ const deleteFirm = async () => {
 
     deleting.value = true;
     try {
-        const response = await fetch(`http://localhost:5001/api/firms/${firmToDelete.value._id}`, {
+        const response = await fetch(`https://counpaign.com/api/firms/${firmToDelete.value._id}`, {
             method: 'DELETE'
         });
 

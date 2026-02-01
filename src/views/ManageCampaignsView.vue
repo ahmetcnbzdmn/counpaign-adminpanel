@@ -28,7 +28,7 @@ const filters = ref({
 const fetchFirms = async () => {
     loading.value = true;
     try {
-        const response = await fetch('http://localhost:5001/api/firms');
+        const response = await fetch('https://counpaign.com/api/firms');
         if (!response.ok) throw new Error('Failed to fetch firms');
         firms.value = await response.json();
     } catch (error) {
@@ -79,7 +79,7 @@ onMounted(fetchFirms);
                 <Column field="companyName" header="İşletme Adı" sortable style="min-width: 200px">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-3">
-                            <img v-if="data.logo" :src="`http://localhost:5001${data.logo}`" class="w-2rem h-2rem border-circle object-cover" />
+                            <img v-if="data.logo" :src="`https://counpaign.com${data.logo}`" class="w-2rem h-2rem border-circle object-cover" />
                             <div v-else class="w-2rem h-2rem border-circle bg-primary-100 flex align-items-center justify-content-center text-primary font-bold">
                                 {{ data.companyName.charAt(0) }}
                             </div>

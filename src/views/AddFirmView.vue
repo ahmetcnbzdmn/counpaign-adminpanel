@@ -232,7 +232,7 @@ const handleSubmit = async () => {
             submitData.append('logo', formData.value.settings.logo);
         }
 
-        const response = await fetch('http://localhost:5001/api/firms', {
+        const response = await fetch('https://counpaign.com/api/firms', {
             method: 'POST',
             body: submitData,
         });

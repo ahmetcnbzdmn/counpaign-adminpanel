@@ -54,9 +54,15 @@ const breadcrumbItems = ref([
 const fetchUserData = async () => {
     loading.value = true;
     try {
+        const token = localStorage.getItem('token');
+        const headers: any = {};
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+
         const [userRes, cafesRes] = await Promise.all([
-            fetch(`http://localhost:5001/api/users/${userId}`),
-            fetch(`http://localhost:5001/api/users/${userId}/cafes`)
+            fetch(`https://counpaign.com/api/users/${userId}`, { headers }),
+            fetch(`https://counpaign.com/api/users/${userId}/cafes`, { headers })
         ]);
 
         if (!userRes.ok || !cafesRes.ok) throw new Error('Failed to fetch data');
@@ -77,9 +83,15 @@ const onCellEditComplete = async (event: any) => {
     if (newValue === originalValue) return;
 
     try {
-        const response = await fetch(`http://localhost:5001/api/users/${userId}/wallet/${data._id}`, {
+        const token = localStorage.getItem('token');
+        const headers: any = { 'Content-Type': 'application/json' };
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+
+        const response = await fetch(`https://counpaign.com/api/users/${userId}/wallet/${data._id}`, {
             method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
+            headers,
             body: JSON.stringify({
                 [field]: newValue
             })
@@ -122,8 +134,15 @@ const confirmDeleteRecord = (record: WalletCafe) => {
 
 const deleteWalletRecord = async (recordId: string) => {
     try {
-        const response = await fetch(`http://localhost:5001/api/users/${userId}/wallet/${recordId}`, {
-            method: 'DELETE'
+        const token = localStorage.getItem('token');
+        const headers: any = {};
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+
+        const response = await fetch(`https://counpaign.com/api/users/${userId}/wallet/${recordId}`, {
+            method: 'DELETE',
+            headers
         });
 
         if (!response.ok) throw new Error('Failed to delete record');

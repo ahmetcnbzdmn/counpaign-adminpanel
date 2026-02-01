@@ -1,6 +1,6 @@
 import { type UserInfo } from '../types/auth.types';
 
-const API_URL = 'http://localhost:5001/api/auth';
+const API_URL = 'https://counpaign.com/api/auth/admin';
 
 export class AuthService {
 

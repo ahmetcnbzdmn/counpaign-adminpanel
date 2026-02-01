@@ -51,6 +51,11 @@ const router = createRouter({
                     path: 'manage-campaigns/:businessId',
                     name: 'FirmCampaigns',
                     component: () => import('../views/FirmCampaignsView.vue'),
+                },
+                {
+                    path: 'qr',
+                    name: 'QR',
+                    component: () => import('../views/QRView.vue'),
                 }
             ]
         }

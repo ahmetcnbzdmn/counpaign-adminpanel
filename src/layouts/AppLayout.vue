@@ -72,6 +72,11 @@ const items = computed(() => {
             label: 'İşletme Yönetimi',
             items: [
                 {
+                    label: 'QR Okutma',
+                    icon: 'pi pi-qrcode',
+                    command: () => router.push('/qr')
+                },
+                {
                     label: 'Kampanyalar',
                     icon: 'pi pi-ticket',
                     command: () => router.push(`/manage-campaigns/${authStore.user?.businessId}`)

@@ -43,12 +43,23 @@ const filters = ref({
 const fetchUsers = async () => {
     loading.value = true;
     try {
-        const response = await fetch('http://localhost:5001/api/users');
-        if (!response.ok) throw new Error('Failed to fetch users');
-        users.value = await response.json();
-    } catch (error) {
+        const token = localStorage.getItem('token');
+        const headers: any = {};
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+
+        const response = await fetch('https://counpaign.com/api/users', { headers });
+        const data = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(data.error || 'Failed to fetch users');
+        }
+        
+        users.value = data;
+    } catch (error: any) {
         console.error('Error fetching users:', error);
-        toast.add({ severity: 'error', summary: 'Hata', detail: 'Kullanıcılar yüklenemedi', life: 3000 });
+        toast.add({ severity: 'error', summary: 'Hata', detail: error.message || 'Kullanıcılar yüklenemedi', life: 3000 });
     } finally {
         loading.value = false;
     }
@@ -68,7 +79,7 @@ const deleteUser = async () => {
 
     deleting.value = true;
     try {
-        const response = await fetch(`http://localhost:5001/api/users/${userToDelete.value._id}`, {
+        const response = await fetch(`https://counpaign.com/api/users/${userToDelete.value._id}`, {
             method: 'DELETE'
         });
 

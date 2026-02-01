@@ -63,7 +63,7 @@ const resolveBusinessId = async (): Promise<string | null> => {
         const token = localStorage.getItem('token');
         if (!token) return null;
 
-        const res = await fetch('http://localhost:5001/api/firms/my-business', {
+        const res = await fetch('https://counpaign.com/api/firms/my-business', {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         
@@ -127,7 +127,7 @@ const campaign = ref<Campaign>({ ...emptyCampaign });
 const fetchFirmData = async () => {
     if (!businessId.value) return;
     try {
-        const response = await fetch(`http://localhost:5001/api/firms`);
+        const response = await fetch(`https://counpaign.com/api/firms`);
         const firms = await response.json();
         firm.value = firms.find((f: any) => f._id === businessId.value) || null;
     } catch (error) {
@@ -148,7 +148,7 @@ const fetchCampaigns = async () => {
     
     loading.value = true;
     try {
-        const response = await fetch(`http://localhost:5001/api/campaigns/business/${businessId.value}`);
+        const response = await fetch(`https://counpaign.com/api/campaigns/business/${businessId.value}`);
         const data = await response.json();
         campaigns.value = data.map((c: any) => ({
             ...c,
@@ -258,11 +258,18 @@ const saveCampaign = async () => {
 
         const method = editing.value ? 'PATCH' : 'POST';
         const url = editing.value 
-            ? `http://localhost:5001/api/campaigns/${campaign.value._id}` 
-            : 'http://localhost:5001/api/campaigns';
+            ? `https://counpaign.com/api/campaigns/${campaign.value._id}` 
+            : 'https://counpaign.com/api/campaigns';
+
+        const token = localStorage.getItem('token');
+        const headers: any = {};
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
 
         const response = await fetch(url, {
             method,
+            headers,
             body: formData
         });
 
@@ -284,7 +291,7 @@ const saveCampaign = async () => {
 const editCampaign = (c: Campaign) => {
     campaign.value = { ...c, businessId: businessId.value! }; // Ensure ID is present
     editing.value = true;
-    previewUrl.value = c.headerImage ? `http://localhost:5001${c.headerImage}` : null;
+    previewUrl.value = c.headerImage ? `https://counpaign.com${c.headerImage}` : null;
     selectedFile.value = null;
     campaignDialog.value = true;
 };
@@ -296,8 +303,15 @@ const confirmDeleteCampaign = (c: Campaign) => {
 
 const deleteCampaign = async () => {
     try {
-        const response = await fetch(`http://localhost:5001/api/campaigns/${campaign.value._id}`, {
-            method: 'DELETE'
+        const token = localStorage.getItem('token');
+        const headers: any = {};
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+
+        const response = await fetch(`https://counpaign.com/api/campaigns/${campaign.value._id}`, {
+            method: 'DELETE',
+            headers
         });
 
         if (!response.ok) throw new Error('Failed to delete campaign');
@@ -353,7 +367,7 @@ onMounted(async () => {
 
                 <Column header="Görsel" style="width: 100px">
                     <template #body="{ data }">
-                        <img v-if="data.headerImage" :src="`http://localhost:5001${data.headerImage}`" class="w-4rem h-3rem border-round object-cover" />
+                        <img v-if="data.headerImage" :src="`https://counpaign.com${data.headerImage}`" class="w-4rem h-3rem border-round object-cover" />
                         <div v-else class="w-4rem h-3rem bg-gray-200 border-round flex align-items-center justify-content-center">
                             <i class="pi pi-image text-gray-400"></i>
                         </div>

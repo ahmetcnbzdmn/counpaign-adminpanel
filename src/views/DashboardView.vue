@@ -60,7 +60,7 @@ const firmTxChartData = ref();
 
 const fetchSuperAdminStats = async () => {
     try {
-        const response = await fetch('http://localhost:5001/api/dashboard/stats');
+        const response = await fetch('https://counpaign.com/api/dashboard/stats');
         const data = await response.json();
         stats.value = data;
         
@@ -84,7 +84,7 @@ const fetchSuperAdminStats = async () => {
 const fetchFirmStats = async () => {
     if (!authStore.user?.businessId) return;
     try {
-        const response = await fetch(`http://localhost:5001/api/dashboard/firm-stats?businessId=${authStore.user.businessId}`);
+        const response = await fetch(`https://counpaign.com/api/dashboard/firm-stats?businessId=${authStore.user.businessId}`);
         const data = await response.json();
         firmStats.value = data;
         updateFirmCharts();
@@ -311,7 +311,7 @@ onMounted(() => {
                     <div class="card p-4 h-full border-left-3 border-primary">
                         <span class="block text-500 font-medium mb-3">Müşteri Sayısı</span>
                         <div class="flex justify-content-between align-items-center">
-                            <div class="text-900 font-bold text-3xl">{{ firmStats.customers.total }}</div>
+                            <div class="text-900 font-bold text-3xl">{{ firmStats?.customers?.total || 0 }}</div>
                             <i class="pi pi-users text-primary text-2xl"></i>
                         </div>
                         <p class="mt-2 mb-0 text-sm text-500">Cüzdanına ekleyenler</p>
@@ -322,7 +322,7 @@ onMounted(() => {
                     <div class="card p-4 h-full border-left-3 border-orange-500">
                         <span class="block text-500 font-medium mb-3">Kampanya Katılım</span>
                          <div class="flex justify-content-between align-items-center">
-                            <div class="text-900 font-bold text-3xl">{{ firmStats.participations.total }}</div>
+                            <div class="text-900 font-bold text-3xl">{{ firmStats?.participations?.total || 0 }}</div>
                             <i class="pi pi-ticket text-orange-500 text-2xl"></i>
                         </div>
                          <p class="mt-2 mb-0 text-sm text-500">Toplam katılım</p>
@@ -333,7 +333,7 @@ onMounted(() => {
                     <div class="card p-4 h-full border-left-3 border-green-500">
                         <span class="block text-500 font-medium mb-3">Günlük İşlem</span>
                          <div class="flex justify-content-between align-items-center">
-                            <div class="text-900 font-bold text-3xl">{{ firmStats.transactions.daily }}</div>
+                            <div class="text-900 font-bold text-3xl">{{ firmStats?.transactions?.daily || 0 }}</div>
                             <i class="pi pi-calendar-times text-green-500 text-2xl"></i>
                         </div>
                          <p class="mt-2 mb-0 text-sm text-500">Bugünkü işlemler</p>
@@ -344,7 +344,7 @@ onMounted(() => {
                     <div class="card p-4 h-full border-left-3 border-blue-500">
                         <span class="block text-500 font-medium mb-3">Aylık İşlem</span>
                          <div class="flex justify-content-between align-items-center">
-                            <div class="text-900 font-bold text-3xl">{{ firmStats.transactions.monthly }}</div>
+                            <div class="text-900 font-bold text-3xl">{{ firmStats?.transactions?.monthly || 0 }}</div>
                             <i class="pi pi-calendar text-blue-500 text-2xl"></i>
                         </div>
                          <p class="mt-2 mb-0 text-sm text-500">Bu ayki işlemler</p>
@@ -359,9 +359,9 @@ onMounted(() => {
                         <div class="mr-3 bg-purple-100 border-circle p-3">
                             <i class="pi pi-star text-purple-500 text-xl"></i>
                         </div>
-                        <div>
+                         <div>
                              <span class="text-500 font-medium text-sm">Kazandırdığı Puan (Haftalık)</span>
-                             <div class="text-900 font-bold text-xl mt-1">{{ firmStats.rewards.weeklyPoints }} Puan</div>
+                             <div class="text-900 font-bold text-xl mt-1">{{ firmStats?.rewards?.weeklyPoints || 0 }} Puan</div>
                         </div>
                     </div>
                  </div>
@@ -372,7 +372,7 @@ onMounted(() => {
                         </div>
                         <div>
                              <span class="text-500 font-medium text-sm">Kazandırdığı Pul (Haftalık)</span>
-                             <div class="text-900 font-bold text-xl mt-1">{{ firmStats.rewards.weeklyStamps }} Pul</div>
+                             <div class="text-900 font-bold text-xl mt-1">{{ firmStats?.rewards?.weeklyStamps || 0 }} Pul</div>
                         </div>
                     </div>
                  </div>
@@ -383,7 +383,7 @@ onMounted(() => {
                         </div>
                         <div>
                              <span class="text-500 font-medium text-sm">Kazandırdığı Hediye (Haftalık)</span>
-                             <div class="text-900 font-bold text-xl mt-1">{{ firmStats.rewards.weeklyCoffee }} Adet</div>
+                             <div class="text-900 font-bold text-xl mt-1">{{ firmStats?.rewards?.weeklyCoffee || 0 }} Adet</div>
                         </div>
                     </div>
                  </div>
